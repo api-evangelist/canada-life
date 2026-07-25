@@ -1,0 +1,110 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  Live probes of api.canadalife.com and my.canadalife.com discovery documents plus the
+  CLIEDIS membership and standards pages, 2026-07-25.
+note: >-
+  With no OpenAPI to read, conformance here is asserted from what the live identity
+  endpoints actually publish and from Canada Life's membership in the Canadian
+  life-insurance EDI standards body. Every "conforms: false" below is a recorded
+  absence, not an inference.
+standards:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    api.canadalife.com publishes token_endpoint https://api.canadalife.com/oauth2/v1/generate
+    with client_secret_post, client_secret_basic and client_secret_jwt auth methods, plus a
+    revocation endpoint. my.canadalife.com publishes a full Salesforce OAuth 2.0 surface.
+- id: oidc-discovery
+  conforms: true
+  evidence: >-
+    Two independent /.well-known/openid-configuration documents return 200 —
+    well-known/canada-life-openid-configuration.json and
+    well-known/canada-life-my-openid-configuration.json.
+- id: oidc-core
+  conforms: partial
+  evidence: >-
+    The gateway advertises an OIDC issuer, JWKS, userinfo and RS256 id_token signing,
+    but publishes its authorization endpoint as "authorize-NOT-SUPPORTED", so the
+    interactive authorization-code flow required by OIDC Core is deliberately disabled.
+    my.canadalife.com implements the full flow via Salesforce.
+- id: rfc7517-jwks
+  conforms: true
+  evidence: >-
+    https://api.canadalife.com/oauth2/v1/jwks returns one RSA key, kid api-gateway-1,
+    alg RS256, use sig.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returns 404 on api.canadalife.com.
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource returns 404 on api.canadalife.com.
+- id: rfc7591-dynamic-client-registration
+  conforms: partial
+  evidence: >-
+    my.canadalife.com publishes registration_endpoint
+    https://my.canadalife.com/services/oauth2/register (Salesforce platform default).
+    The partner gateway publishes none — clients are provisioned out of band.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: No security.txt on api.canadalife.com, www.canadalife.com or any subdomain.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document is published. Every spec path on the live gateway
+    (/openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs, /redoc)
+    returns 403.
+- id: asyncapi
+  conforms: false
+  evidence: No event catalog, webhook documentation or AsyncAPI document exists.
+- id: graphql
+  conforms: false
+  evidence: >-
+    /graphql on the gateway returns 403 like every other path; the surface is not
+    confirmed to exist and introspection is impossible anonymously.
+- id: grpc
+  conforms: false
+  evidence: No .proto published on any Canada Life or Great-West Lifeco host or GitHub org.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    The gateway returns a bare "403 Forbidden" body with no application/problem+json
+    representation.
+- id: acord-xml-for-life
+  conforms: true
+  evidence: >-
+    Canada Life is listed as a Carrier member of CLIEDIS (Canadian Life Insurance EDI
+    Standards) at https://www.cliedis.ca/who-we-are/members, alongside Manulife, Sun
+    Life, iA Financial Group, Empire Life, Equitable Life, ivari, Beneva, Desjardins
+    Financial Security, BMO Life, RBC Life, Co-operators, Assumption Life, Foresters
+    Financial and Humania. CLIEDIS distributes ACORD XML for Life through the CAIR tool
+    (https://www.cliediscair.ca) and defines the e-application, pending-policy and Book
+    of Business feeds carriers exchange with distributors.
+  first_party_reference: false
+  first_party_note: >-
+    Zero matches for "acord", "cliedis", "edi" or "data-exchange" across the 1,236 URLs
+    in https://www.canadalife.com/en/sitemap.xml. The conformance is real but it is
+    evidenced by the standards body, never by Canada Life's own site.
+- id: fhir
+  conforms: false
+  evidence: Not applicable — Canadian life and health carrier, not a clinical data holder.
+- id: fapi
+  conforms: false
+  evidence: >-
+    No FAPI security profile claim. No mTLS, no PAR, no proof-of-possession advertised
+    in either discovery document.
+- id: cdr-open-banking
+  conforms: false
+  evidence: >-
+    Canada's Consumer-Driven Banking framework excludes insurance entirely, so there is
+    no open-insurance mandate this carrier is required to meet.
+certifications_published: false
+certifications_note: >-
+  No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP claim appears on any public Canada Life
+  page. The internet-security page describes practices (SSL, auto-logout, monitoring)
+  without naming a single certification, and there is no trust centre at
+  trust.canadalife.com (does not resolve). No Compliance pointer is emitted for this
+  provider because there is no published compliance program to point at.

@@ -1,0 +1,91 @@
+generated: '2026-07-25'
+method: searched
+source: live probes of every Canada Life host on 2026-07-25
+summary: >-
+  Canada Life exposes exactly three anonymously readable machine-readable documents
+  across its estate, and all three are identity documents. The partner API gateway at
+  api.canadalife.com publishes an OpenID Connect discovery document and a JWKS while
+  returning 403 on every business path. The Salesforce-hosted customer portal at
+  my.canadalife.com publishes a second, unrelated OpenID Connect discovery document
+  (Salesforce Experience Cloud platform defaults, including a full scopes_supported
+  vocabulary). No security.txt, no api-catalog, no ai-plugin.json and no RFC 8414
+  oauth-authorization-server document exists on any host.
+hosts:
+- host: https://api.canadalife.com
+  role: partner API gateway (OAuth2 client-credentials, 403 on all business paths)
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: canada-life-openid-configuration.json
+    note: RFC 8414-style OIDC discovery. issuer https://api.canadalife.com.
+  - path: /oauth2/v1/jwks
+    status: 200
+    file: canada-life-jwks.json
+    note: One RSA signing key, kid api-gateway-1, alg RS256, use sig.
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://my.canadalife.com
+  role: Salesforce Experience Cloud retail customer portal
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: canada-life-my-openid-configuration.json
+    note: >-
+      Salesforce-provided OIDC discovery on a Canada Life host. Publishes 36
+      scopes_supported and 24 claims_supported, plus dynamic client registration,
+      introspection and revocation endpoints. These are Salesforce platform scopes,
+      not a Canada Life business-scope vocabulary.
+  - path: /.well-known/security.txt
+    status: 302
+    note: Redirects to the portal login; not a security.txt.
+- host: https://www.canadalife.com
+  role: corporate marketing site
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /security.txt
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+- host: https://advisor.canadalife.com
+  role: Liferay "Digital Agent" advisor login wall
+  documents:
+  - path: /.well-known/security.txt
+    status: 302
+    note: Redirects to /login. No document served.
+  - path: /.well-known/openid-configuration
+    status: 302
+    note: Redirects to /login. No document served.
+- host: https://www.grsaccess.com
+  role: group retirement and savings plan-member portal
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: >-
+      Soft 200. Body is a legacy HTML redirect stub to /public/en/home.aspx, not a
+      security.txt. Recorded as a false positive, not a hit.
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: Same soft-200 HTML redirect stub. Not an OIDC document.
+- host: https://www.greatwestlifeco.com
+  role: parent company (Great-West Lifeco) investor site
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+negative_findings:
+- No RFC 9116 security.txt is published on any Canada Life host.
+- No /.well-known/api-catalog (RFC 9727) is published.
+- No ai-plugin.json or llms.txt is published.
+- >-
+  api.canadalife.com does not publish the RFC 8414 oauth-authorization-server
+  document, only the OIDC discovery variant.

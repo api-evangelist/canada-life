@@ -1,0 +1,64 @@
+generated: '2026-07-25'
+method: searched
+source: Live probes and DNS inspection of Canada Life hosts, 2026-07-25.
+summary: >-
+  Canada Life publishes no versioning policy, no deprecation policy, no SLA and no
+  status page for its partner API gateway. The one genuine lifecycle artifact this
+  provider has is an ending, not a beginning: a retired Apigee developer portal whose
+  DNS record was never cleaned up.
+versioning:
+  scheme: uri-path
+  current: v1
+  evidence: >-
+    Only observable on the identity endpoints — /oauth2/v1/generate, /oauth2/v1/jwks,
+    /oauth2/v1/userinfo, /oauth2/v1/revoke. No business path is observable anonymously,
+    so this is the auth surface's versioning, not a documented API-wide policy.
+  docs: null
+  policy_published: false
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: unknown
+  sunset_header_note: >-
+    RFC 8594 Sunset/Deprecation header support cannot be observed — every business path
+    returns 403 with no lifecycle headers.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page: null
+status_page_note: >-
+  status.canadalife.com does not resolve, and no third-party status page (Statuspage,
+  Instatus, Better Stack) is linked from any Canada Life property. No StatusPage pointer
+  is emitted because there is no status page to point at.
+changelog: null
+changelog_note: >-
+  No dated API changelog or release notes exist. The corporate newsroom at
+  https://www.canadalife.com/about-us/news-highlights/news.html carries company news,
+  not API change communication.
+retired_surfaces:
+- name: Apigee developer portal
+  url: https://developers.canadalife.com/
+  status: 000
+  dns_record: developers.canadalife.com. 300 IN CNAME prod-canadalife-portal.apigee.net.
+  dns_status: NXDOMAIN on the CNAME target
+  verdict: dangling-cname-to-retired-apigee-portal
+  significance: >-
+    Canada Life once stood up an Apigee-hosted developer portal and has since
+    decommissioned it, leaving the CNAME behind. This is the only hard evidence that a
+    public developer program was ever attempted, and its removal is the single most
+    important lifecycle fact about this provider.
+live_surfaces:
+- host: https://api.canadalife.com
+  state: live-but-gated
+  note: Gateway answers on 34.149.129.205; 403 on every business path; only OIDC
+    discovery and JWKS are anonymously readable.
+- host: https://advisor.canadalife.com
+  state: live
+  note: Liferay "Digital Agent" advisor login wall, noindex.
+- host: https://my.canadalife.com
+  state: live
+  note: Salesforce Experience Cloud retail customer portal.
+deprecated_operations: []
+deprecated_operations_note: No OpenAPI exists, so no operation-level deprecation can be
+  derived.

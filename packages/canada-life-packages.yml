@@ -1,0 +1,71 @@
+generated: '2026-07-25'
+method: searched
+source: Registry and source-host searches run 2026-07-25.
+packages: []
+result: none
+summary: >-
+  Canada Life ships no first-party client libraries. Every public registry and both
+  candidate GitHub organizations were checked and none carries a Canada Life SDK. No
+  SDKs pointer is emitted in apis.yml because there is no SDK to point at.
+registries_searched:
+- registry: npm
+  query: canadalife
+  results: 0
+- registry: npm
+  query: canada-life
+  results: 0
+- registry: pypi
+  query: canadalife
+  status: 404
+- registry: pypi
+  query: canada-life
+  status: 404
+- registry: maven-central
+  query: canadalife
+  endpoint: https://central.sonatype.com/api/internal/browse/components
+  results: 0
+- registry: nuget
+  query: canadalife
+  endpoint: https://azuresearch-usnc.nuget.org/query
+  results: 0
+- registry: rubygems
+  query: canadalife
+  endpoint: https://rubygems.org/api/v1/search.json
+  results: 0
+- registry: packagist
+  query: canadalife
+  endpoint: https://packagist.org/search.json
+  results: 0
+- registry: crates.io
+  query: canadalife
+  endpoint: https://crates.io/api/v1/crates
+  results: 0
+- registry: pkg.go.dev
+  query: canadalife
+  endpoint: https://pkg.go.dev/search
+  results: 0
+source_hosts_searched:
+- host: github.com/Canada-Life
+  api: https://api.github.com/orgs/canada-life
+  public_repos: 0
+  location: Canada
+  verdict: >-
+    Organization exists (created 2021-12-10) but publishes zero public repositories, has
+    no profile blog and is unverified. Not wired as a GitHubOrganization pointer — there
+    is nothing there and the account is not confirmed as Canada Life's.
+- host: github.com/CanadaLifeUK
+  api: https://api.github.com/orgs/canadalifeuk
+  public_repos: 1
+  repos: ['.github (profile repo only, no code)']
+  verdict: >-
+    Canada Life UK — a separate Great-West Lifeco subsidiary, not the Canadian carrier
+    this repo profiles. Excluded.
+- host: developers.canadalife.com
+  verdict: Retired Apigee portal; dangling CNAME, does not resolve. Any SDK downloads it
+    once hosted are gone.
+distribution_note: >-
+  Canada Life's machine-to-machine integration for the Canadian market is ACORD XML for
+  Life over the CLIEDIS channel, consumed through distributor and MGA software (illustration
+  systems, e-application front ends, Book-of-Business tooling) rather than through a
+  Canada Life-published SDK. The client libraries in this market belong to the
+  distributor-software vendors, not to the carrier.

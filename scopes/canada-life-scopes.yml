@@ -1,0 +1,216 @@
+generated: '2026-07-25'
+method: searched
+source: https://my.canadalife.com/.well-known/openid-configuration (HTTP 200, fetched 2026-07-25)
+docs: null
+docs_note: Canada Life publishes no scopes or permissions reference page. The scope vocabulary
+  below is served by the Salesforce Experience Cloud platform that hosts my.canadalife.com,
+  so the authoritative descriptions live in Salesforce's OAuth scope documentation, not in
+  a Canada Life document. Descriptions are filled in only for the RFC-standard OpenID Connect
+  scopes; platform-specific scopes are left null rather than guessed.
+caveat: These are NOT Canada Life business scopes. No insurance, policy, claims, benefits
+  or group-retirement scope vocabulary is published anywhere. The partner gateway at api.canadalife.com
+  publishes scopes_supported as an empty array.
+schemes:
+- name: canadalife-gateway-oauth2
+  surface: https://api.canadalife.com
+  source: well-known/canada-life-openid-configuration.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.canadalife.com/oauth2/v1/generate
+    authorizationUrl: null
+    scope_count: 0
+  scopes_supported: []
+  note: scopes_supported published as an empty array; no scopes to harvest.
+- name: canadalife-customer-portal-oidc
+  surface: https://my.canadalife.com
+  source: well-known/canada-life-my-openid-configuration.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://my.canadalife.com/services/oauth2/authorize
+    tokenUrl: https://my.canadalife.com/services/oauth2/token
+    scope_count: 36
+  note: Salesforce Experience Cloud platform scope vocabulary served on a Canada Life host.
+scope_count: 36
+scopes:
+- scope: address
+  description: Standard OIDC scope. Requests the address claim.
+  origin: oidc-core
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: cdp_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: cdp_calculated_insight_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: cdp_identityresolution_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: cdp_ingest_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: cdp_profile_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: cdp_query_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: cdp_segment_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: chatbot_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: chatter_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: content
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: custom_permissions
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: data_cloud_user_claims
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: eclair_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: einstein_gpt_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: email
+  description: Standard OIDC scope. Requests the email and email_verified claims.
+  origin: oidc-core
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: forgot_password
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: full
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: id
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: interaction_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: lightning
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: mcp_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: offline_access
+  description: Standard OIDC scope. Requests a refresh token so the client can obtain new
+    access tokens without the user present.
+  origin: oidc-core
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: openid
+  description: Standard OpenID Connect scope. Requests an ID token for the authenticated user.
+  origin: oidc-core
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: pardot_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: phone
+  description: Standard OIDC scope. Requests the phone_number and phone_number_verified claims.
+  origin: oidc-core
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: profile
+  description: Standard OIDC scope. Requests the default profile claims (name, family_name,
+    given_name, nickname, picture, preferred_username, profile, updated_at, zoneinfo, locale).
+  origin: oidc-core
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: pwdless_login_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: refresh_token
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: scrt_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: sfap_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: user_registration_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: visualforce
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: wave_api
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json
+- scope: web
+  description: null
+  origin: salesforce-experience-cloud
+  sources:
+  - well-known/canada-life-my-openid-configuration.json

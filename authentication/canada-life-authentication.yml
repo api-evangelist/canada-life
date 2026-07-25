@@ -1,0 +1,96 @@
+generated: '2026-07-25'
+method: searched
+source: >-
+  https://api.canadalife.com/.well-known/openid-configuration,
+  https://api.canadalife.com/oauth2/v1/jwks,
+  https://my.canadalife.com/.well-known/openid-configuration
+note: >-
+  Derived from live OpenID Connect discovery documents rather than from an OpenAPI
+  specification — Canada Life publishes no OpenAPI, so there are no securitySchemes to
+  read. Everything below was fetched anonymously on 2026-07-25 and is recorded verbatim
+  from the published discovery metadata.
+summary:
+  types: [oauth2, openIdConnect]
+  api_key_in: []
+  oauth2_flows: [clientCredentials, authorizationCode]
+  interactive_flow_supported_on_gateway: false
+  self_serve_onboarding: false
+  onboarding: >-
+    No public signup. Gateway client credentials are issued through a partner,
+    distributor or MGA relationship; there is no application form on any public page.
+schemes:
+- name: canadalife-gateway-oauth2
+  type: openIdConnect
+  surface: partner API gateway
+  issuer: https://api.canadalife.com
+  openIdConnectUrl: https://api.canadalife.com/.well-known/openid-configuration
+  source: well-known/canada-life-openid-configuration.json
+  status: 200
+  token_endpoint: https://api.canadalife.com/oauth2/v1/generate
+  token_endpoint_auth_methods_supported:
+  - client_secret_post
+  - client_secret_basic
+  - client_secret_jwt
+  authorization_endpoint: https://api.canadalife.com/oauth2/v1/authorize-NOT-SUPPORTED
+  authorization_code_supported: false
+  authorization_code_note: >-
+    The authorization endpoint is published with a literal "-NOT-SUPPORTED" suffix, so
+    the interactive authorization-code flow is switched off by design. This is a
+    server-to-server partner gateway.
+  userinfo_endpoint: https://api.canadalife.com/oauth2/v1/userinfo
+  revocation_endpoint: https://api.canadalife.com/oauth2/v1/revoke
+  jwks_uri: https://api.canadalife.com/oauth2/v1/jwks
+  jwks_confirmed: true
+  jwks_keys: 1
+  jwks_kid: api-gateway-1
+  id_token_signing_alg_values_supported: [RS256]
+  response_types_supported: [code, token]
+  subject_types_supported: public
+  scopes_supported: []
+  scopes_note: >-
+    scopes_supported is published as an empty array. No OAuth scope vocabulary is
+    exposed publicly on the gateway.
+  bearer_usage: >-
+    Access tokens are presented as HTTP bearer tokens. Every business path probed on
+    this host returned 403 anonymously, so no operation-level security requirement can
+    be observed.
+- name: canadalife-customer-portal-oidc
+  type: openIdConnect
+  surface: my.canadalife.com retail customer portal (Salesforce Experience Cloud)
+  issuer: https://my.canadalife.com
+  openIdConnectUrl: https://my.canadalife.com/.well-known/openid-configuration
+  source: well-known/canada-life-my-openid-configuration.json
+  status: 200
+  authorization_endpoint: https://my.canadalife.com/services/oauth2/authorize
+  token_endpoint: https://my.canadalife.com/services/oauth2/token
+  userinfo_endpoint: https://my.canadalife.com/services/oauth2/userinfo
+  introspection_endpoint: https://my.canadalife.com/services/oauth2/introspect
+  revocation_endpoint: https://my.canadalife.com/services/oauth2/revoke
+  registration_endpoint: https://my.canadalife.com/services/oauth2/register
+  end_session_endpoint: https://my.canadalife.com/services/auth/idp/oidc/logout
+  jwks_uri: https://my.canadalife.com/id/keys
+  id_token_signing_alg_values_supported: [RS256]
+  response_types_supported: [code, token, 'token id_token']
+  token_endpoint_auth_methods_supported:
+  - client_secret_post
+  - client_secret_basic
+  - private_key_jwt
+  frontchannel_logout_supported: true
+  scopes_supported_count: 36
+  scopes_note: >-
+    Salesforce Experience Cloud platform scopes, not Canada Life business scopes. See
+    scopes/canada-life-scopes.yml for the full list and the caveat.
+  claims_supported_count: 24
+transport_security:
+  tls: TLSv1.3 on www.canadalife.com
+  hsts: true
+  see: security/canada-life-domain-security.yml
+non_api_channels:
+- name: ACORD XML for Life via CLIEDIS
+  auth: Out of band. Distributor/carrier trading-partner agreements administered through
+    CLIEDIS, not through an OAuth gateway.
+  see: conformance/canada-life-conformance.yml
+docs: null
+docs_note: >-
+  Canada Life publishes no authentication documentation page. The OIDC discovery
+  documents above are the only published description of the auth model.

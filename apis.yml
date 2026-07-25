@@ -15,7 +15,8 @@ description: >-
   OAuth2-protected API gateway at api.canadalife.com that returns 403 on every path
   and exposes only OpenID discovery and JWKS anonymously, a Liferay "Digital Agent"
   advisor login wall at advisor.canadalife.com, a Salesforce-hosted customer portal
-  at my.canadalife.com, and — the real machine-to-machine channel for this market —
+  at my.canadalife.com that publishes its own OpenID Connect discovery document with
+  36 platform scopes, and — the real machine-to-machine channel for this market —
   ACORD XML for Life data exchange with distributors through its carrier membership
   in CLIEDIS, the Canadian Life Insurance EDI Standards body. A former Apigee
   developer portal at developers.canadalife.com survives only as a dangling DNS
@@ -35,7 +36,65 @@ tags:
 created: '2026-07-25'
 modified: '2026-07-25'
 specificationVersion: '0.19'
-apis: []
+apis:
+- name: Canada Life Partner API Gateway
+  description: >-
+    A live, production API gateway at api.canadalife.com serving Canada Life's partner,
+    distributor and MGA integrations. It is fully gated: every business path probed
+    (including /v1, /docs, /health, /openapi.json, /swagger.json, /api-docs and /graphql)
+    returns 403 Forbidden to anonymous callers, and no reference documentation is
+    published anywhere. The only anonymously readable surface is the OAuth 2.0 / OpenID
+    Connect identity layer — a discovery document and a JWKS — which confirms a
+    server-to-server client-credentials model with the interactive authorization-code
+    flow deliberately disabled (the authorization endpoint is published with a literal
+    "-NOT-SUPPORTED" suffix). Credentials are issued through a partner relationship;
+    there is no self-serve signup and no OpenAPI to harvest.
+  humanURL: https://www.canadalife.com/sign-in/advisor-logins.html
+  baseURL: https://api.canadalife.com
+  tags:
+  - Partner Gated
+  - OAuth
+  - OpenID Connect
+  - Insurance
+  properties:
+  - type: Authentication
+    url: authentication/canada-life-authentication.yml
+  - type: OAuthScopes
+    url: scopes/canada-life-scopes.yml
+  - type: WellKnown
+    url: well-known/canada-life-well-known.yml
+  - type: OpenIDConnect
+    url: https://api.canadalife.com/.well-known/openid-configuration
+  - type: JWKS
+    url: https://api.canadalife.com/oauth2/v1/jwks
+  - type: Conformance
+    url: conformance/canada-life-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/canada-life-lifecycle.yml
+- name: Canada Life Customer Portal Identity (my.canadalife.com)
+  description: >-
+    The retail customer portal at my.canadalife.com is hosted on Salesforce Experience
+    Cloud and publishes a complete OpenID Connect discovery document anonymously —
+    authorization, token, userinfo, introspection, revocation, dynamic client
+    registration and front-channel logout endpoints, 36 scopes_supported and 24
+    claims_supported. This is a genuine machine-readable identity surface on a Canada
+    Life host, but the scope vocabulary is Salesforce platform defaults rather than a
+    Canada Life insurance-business vocabulary, and the portal itself is a login wall
+    with no published API for policies, claims or benefits.
+  humanURL: https://my.canadalife.com/
+  baseURL: https://my.canadalife.com
+  tags:
+  - OpenID Connect
+  - Salesforce
+  - Customer Portal
+  - Partner Gated
+  properties:
+  - type: Authentication
+    url: authentication/canada-life-authentication.yml
+  - type: OAuthScopes
+    url: scopes/canada-life-scopes.yml
+  - type: OpenIDConnect
+    url: https://my.canadalife.com/.well-known/openid-configuration
 common:
 - type: Website
   url: https://www.canadalife.com/
@@ -47,10 +106,42 @@ common:
   url: https://advisor.canadalife.com/login
 - type: CustomerPortal
   url: https://my.canadalife.com/
+- type: Support
+  url: https://www.canadalife.com/support.html
+- type: ContactUs
+  url: https://www.canadalife.com/contact-us.html
+- type: Blog
+  url: https://www.canadalife.com/blog.html
+- type: News
+  url: https://www.canadalife.com/about-us/news-highlights/news.html
+- type: PrivacyPolicy
+  url: https://www.canadalife.com/privacy.html
+- type: TermsOfService
+  url: https://www.canadalife.com/terms-of-use.html
+- type: Security
+  url: https://www.canadalife.com/internet-security.html
 - type: Standards
   url: https://www.cliedis.ca/who-we-are/members
 - type: LinkedIn
   url: https://www.linkedin.com/company/canada-life
+- type: Authentication
+  url: authentication/canada-life-authentication.yml
+- type: OAuthScopes
+  url: scopes/canada-life-scopes.yml
+- type: WellKnown
+  url: well-known/canada-life-well-known.yml
+- type: DomainSecurity
+  url: security/canada-life-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/canada-life-vulnerability-disclosure.yml
+- type: Conformance
+  url: conformance/canada-life-conformance.yml
+- type: Lifecycle
+  url: lifecycle/canada-life-lifecycle.yml
+- type: Packages
+  url: packages/canada-life-packages.yml
+- type: LLMsTxt
+  url: llms/canada-life-llms.txt
 - type: Review
   url: review.yml
 maintainers:
