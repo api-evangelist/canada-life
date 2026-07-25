@@ -1,0 +1,295 @@
+aid: canada-life
+name: Canada Life
+review:
+  question: Does Canada Life expose a real, public, self-serve developer portal or
+    any downloadable API specifications?
+  answer: false
+  date: '2026-07-25'
+  reviewer: API Evangelist
+  homeMarket: Canada
+  tier: carrier-life-health
+  gated: true
+findings:
+  summary: |
+    Canada Life publishes no public developer portal, no API reference, and no
+    downloadable OpenAPI/Swagger specification. Every candidate developer
+    hostname and path was probed on 2026-07-25 and none returned a usable
+    developer surface.
+
+    The single most interesting artifact is a decommissioned one:
+    developers.canadalife.com still exists in Canada Life's DNS as a CNAME to
+    prod-canadalife-portal.apigee.net, but that Apigee portal hostname no
+    longer resolves (NXDOMAIN on the CNAME target). Canada Life therefore once
+    stood up an Apigee-hosted developer portal and has since retired it,
+    leaving a dangling record behind.
+
+    The gateway itself is alive. api.canadalife.com resolves (34.149.129.205)
+    and answers, but returns "403 Forbidden" on every path probed — /, /v1,
+    /docs, /portal, /health, /status, /openapi.json, /swagger.json,
+    /api-docs, /v1/openapi.json and /graphql. The only two anonymously
+    readable endpoints are OpenID Connect discovery metadata and the JWKS
+    key set, both of which returned HTTP 200 and are recorded verbatim below.
+    That metadata is enough to state the auth model with confidence and not
+    enough to describe a single business operation.
+
+    Everything a partner or advisor would actually integrate with sits behind
+    a login. advisor.canadalife.com 301-redirects to /login, a Liferay-based
+    "Digital Agent" advisor portal marked noindex. my.canadalife.com is a
+    Salesforce-hosted retail customer portal. Neither is a developer portal
+    and neither is treated as one here.
+
+    On the sector-specific signal: Canada Life's own website carries no ACORD
+    reference at all. The public English sitemap was downloaded and parsed —
+    1,236 URLs — and zero matched acord, api, developer, cliedis, edi or
+    data-exchange. The ACORD posture is real but it is indirect: Canada Life
+    is a listed carrier member of CLIEDIS (Canadian Life Insurance EDI
+    Standards), the Canadian body that distributes the ACORD XML for Life
+    standard (v2.48, published through the CLIEDIS CAIR tool) and defines the
+    e-application, pending-policy, and Book-of-Business feeds that carriers
+    exchange with distributors. That is where Canada Life's machine-to-machine
+    insurance data actually moves, and it is a standards-body channel, not a
+    Canada Life API product.
+
+    This is an honest stub and a correct outcome. Canada Life is a Big-Few
+    Canadian life carrier operating in a market with no open-insurance
+    mandate — Consumer-Driven Banking, Canada's open-banking framework,
+    excludes insurance entirely — and it behaves accordingly.
+  developerPortal:
+    url: https://developers.canadalife.com/
+    httpStatus: 000
+    resolves: false
+    dnsRecord: developers.canadalife.com. 300 IN CNAME prod-canadalife-portal.apigee.net.
+    dnsStatus: NXDOMAIN (CNAME target does not resolve)
+    verdict: dangling-cname-to-retired-apigee-portal
+    isRealSelfServePortal: false
+    note: Not a developer portal, not a login wall, not a marketing page — a
+      decommissioned Apigee developer portal whose DNS record was never removed.
+  probes:
+  - url: https://developer.canadalife.com/
+    status: 000
+    note: Does not resolve.
+  - url: https://developers.canadalife.com/
+    status: 000
+    note: Dangling CNAME to prod-canadalife-portal.apigee.net (NXDOMAIN).
+  - url: https://docs.canadalife.com/
+    status: 000
+    note: Does not resolve.
+  - url: https://api.canadalife.com/
+    status: 403
+    note: Live gateway at 34.149.129.205. Body is a bare "403 Forbidden".
+  - url: https://www.canadalife.com/developers
+    status: 404
+  - url: https://www.canadalife.com/api
+    status: 404
+  - url: https://www.canadalife.com/developer
+    status: 404
+  - url: https://www.canadalife.com/partners
+    status: 404
+  - url: https://www.canadalife.com/integrations
+    status: 404
+  - url: https://www.canadalife.com/
+    status: 200
+    note: Corporate marketing site. No API, developer or integration section.
+  - url: https://api.canadalife.com/openapi.json
+    status: 403
+  - url: https://api.canadalife.com/swagger.json
+    status: 403
+  - url: https://api.canadalife.com/v1/openapi.json
+    status: 403
+  - url: https://api.canadalife.com/api-docs
+    status: 403
+  - url: https://api.canadalife.com/docs
+    status: 403
+  - url: https://api.canadalife.com/portal
+    status: 403
+  - url: https://api.canadalife.com/graphql
+    status: 403
+    note: No GraphQL introspection possible; gateway rejects anonymously.
+  - url: https://api.canadalife.com/.well-known/openid-configuration
+    status: 200
+    note: Real OIDC discovery document. Captured verbatim below.
+  - url: https://api.canadalife.com/oauth2/v1/jwks
+    status: 200
+    note: Real JWKS, RSA keys, RS256.
+  - url: https://api.canadalife.com/.well-known/oauth-authorization-server
+    status: 404
+  - url: https://api.canadalife.com/oauth2/v1/generate
+    status: 403
+    method: POST
+    note: Token endpoint rejects unauthenticated calls.
+  - url: https://www.canadalife.com/.well-known/openid-configuration
+    status: 404
+  - url: https://www.canadalife.com/.well-known/security.txt
+    status: 404
+  - url: https://advisor.canadalife.com/
+    status: 200
+    note: 301 to https://advisor.canadalife.com/login. Liferay "Digital Agent"
+      advisor login wall, meta robots noindex. Partner-gated, not a developer portal.
+  - url: https://my.canadalife.com/
+    status: 200
+    note: Salesforce-hosted (siteforce.com) retail customer portal. Login wall.
+  - url: https://www.canadalife.com/sitemap.xml
+    status: 200
+    note: Sitemap index; English sitemap parsed at 1,236 URLs.
+  specifications:
+    openapiHarvested: false
+    specsCount: 0
+    note: No OpenAPI, Swagger, AsyncAPI, GraphQL SDL or .proto file is published
+      anywhere on a Canada Life host. Every spec path on the live gateway returns
+      403. The openapi/ directory is deliberately omitted from this repo because
+      there was nothing real to save.
+  acordPosture:
+    phrase: ACORD XML for Life via CLIEDIS carrier membership; no first-party ACORD
+      reference on canadalife.com
+    firstPartyReference: false
+    firstPartyEvidence: 0 matches for "acord" across 1,236 URLs in
+      https://www.canadalife.com/en/sitemap.xml, and no API/EDI/data-exchange page
+      exists on the public site.
+    standardsBody: CLIEDIS (Canadian Life Insurance EDI Standards)
+    membershipConfirmedAt: https://www.cliedis.ca/who-we-are/members
+    membershipRole: Carrier member (listed alongside Manulife, Sun Life, iA, Empire
+      Life, Equitable Life, ivari, Beneva, Desjardins Financial Security and others)
+    standardVersion: ACORD XML for Life v2.48, distributed through the CLIEDIS CAIR
+      tool (https://www.cliediscair.ca)
+    transactionsCovered: Electronic application (e-app), pending policy feed, and
+      Book of Business feed for Life, Critical Illness and Disability
+    ivansOrAgencyDownload: Not applicable — IVANS / Applied Epic / Vertafore AMS360
+      agency download is a US property-and-casualty channel. Canada's life-and-health
+      analogue is the CLIEDIS ACORD XML for Life feed set, which is what applies here.
+  insuranceVerbs:
+    quote:
+      publicApi: false
+      note: No public quoting API. Illustrations and quotes run through advisor
+        tooling behind the Digital Agent login.
+    bind:
+      publicApi: false
+      note: New business is submitted advisor-side; the machine channel is the
+        CLIEDIS ACORD XML for Life e-application, not a Canada Life API.
+    issue:
+      publicApi: false
+      note: Policy issue and inforce status reach distributors as CLIEDIS pending
+        policy and Book of Business feeds.
+    fnol:
+      publicApi: false
+      note: Claims are submitted by plan members through my.canadalife.com, the
+        mobile app, or PDF forms. No FNOL or claims API is documented.
+    audience: partner-only (advisors, MGAs and distributors) — nothing consumer-facing
+      or agent-facing is exposed as a self-serve API.
+  authModel:
+    scheme: OAuth2 client credentials (bearer), enforced at an Apigee-style gateway
+    issuer: https://api.canadalife.com
+    tokenEndpoint: https://api.canadalife.com/oauth2/v1/generate
+    tokenEndpointAuthMethods:
+    - client_secret_post
+    - client_secret_basic
+    - client_secret_jwt
+    authorizationEndpoint: https://api.canadalife.com/oauth2/v1/authorize-NOT-SUPPORTED
+    authorizationCodeSupported: false
+    authorizationCodeNote: The authorization endpoint is literally published with a
+      "-NOT-SUPPORTED" suffix, so the interactive authorization-code flow is
+      switched off by design. This is a server-to-server partner gateway only.
+    jwksUri: https://api.canadalife.com/oauth2/v1/jwks
+    jwksConfirmed: true
+    signingAlgorithms:
+    - RS256
+    responseTypesSupported:
+    - code
+    - token
+    scopesSupported: []
+    scopesNote: scopes_supported is published as an empty array — no OAuth scope
+      vocabulary is exposed publicly, so there is nothing to harvest into a scopes
+      artifact.
+    userinfoEndpoint: https://api.canadalife.com/oauth2/v1/userinfo
+    revocationEndpoint: https://api.canadalife.com/oauth2/v1/revoke
+    onboarding: No self-serve signup. Client credentials are issued through a
+      partner/distributor relationship; there is no public application form.
+  webhooks:
+    published: false
+    asyncapi: false
+    eventCatalog: false
+    note: No event catalog, webhook documentation or AsyncAPI document exists.
+      Absence is the finding — event-driven surfaces are rare among Canadian
+      life-and-health carriers.
+  postman:
+    publicCollection: false
+    publicWorkspace: false
+  graphql:
+    surface: https://api.canadalife.com/graphql
+    status: 403
+    introspected: false
+    note: Path is not distinguishable from any other gated path; the gateway 403s
+      everything. No SDL harvested; graphql/ directory deliberately omitted.
+  grpc:
+    protoPublished: false
+  transports:
+  - protocol: REST
+    scheme: https
+    baseURL: https://api.canadalife.com
+    documented: false
+    gated: true
+    note: Live gateway, 403 on every path. No published reference.
+  - protocol: OAuth2
+    scheme: https
+    baseURL: https://api.canadalife.com/oauth2/v1
+    documented: true
+    gated: true
+    note: Only the discovery metadata and JWKS are anonymously readable.
+  - protocol: ACORD XML for Life
+    scheme: file/EDI
+    documented: false
+    gated: true
+    note: Distributor data exchange governed by CLIEDIS, not by Canada Life.
+  - protocol: GraphQL
+    scheme: https
+    documented: false
+    note: Not confirmed to exist; the gateway rejects anonymously.
+  - protocol: WebSocket
+    scheme: wss
+    documented: false
+    note: None documented.
+  harvestedArtifacts:
+  - name: OpenID Connect discovery document
+    url: https://api.canadalife.com/.well-known/openid-configuration
+    status: 200
+    fetched: '2026-07-25'
+    verbatim: |
+      {"authorization_endpoint":"https://api.canadalife.com/oauth2/v1/authorize-NOT-SUPPORTED","id_token_signing_alg_values_supported":["RS256"],"issuer":"https://api.canadalife.com","jwks_uri":"https://api.canadalife.com/oauth2/v1/jwks","response_types_supported":["code","token"],"revocation_endpoint":"https://api.canadalife.com/oauth2/v1/revoke","scopes_supported":[],"token_endpoint":"https://api.canadalife.com/oauth2/v1/generate","token_endpoint_auth_methods_supported":["client_secret_post","client_secret_basic","client_secret_jwt"],"userinfo_endpoint":"https://api.canadalife.com/oauth2/v1/userinfo","subject_types_supported": "public"}
+sources:
+- url: https://www.canadalife.com/
+  type: Website
+  status: 200
+  note: Corporate site for the Canadian market. Life, health and dental, disability,
+    critical illness, group retirement, savings and investments. No developer surface.
+- url: https://www.canadalife.com/en/sitemap.xml
+  type: Sitemap
+  status: 200
+  note: 1,236 URLs. Zero matches for acord, api, developer, cliedis, edi or
+    data-exchange.
+- url: https://www.canadalife.com/sign-in/advisor-logins.html
+  type: SignIn
+  status: 200
+  note: Advisor sign-in landing page. Points at an individual-customer portal and a
+    group-retirement portal, both login-only.
+- url: https://advisor.canadalife.com/login
+  type: PartnerPortal
+  status: 200
+  note: Liferay "Digital Agent" advisor login wall, noindex, CORS allowlisting
+    advisor.freedom55financial.com. Confirmed a login wall, not a developer portal.
+- url: https://api.canadalife.com/.well-known/openid-configuration
+  type: Authentication
+  status: 200
+  note: Only substantive machine-readable artifact published by Canada Life.
+- url: https://api.canadalife.com/oauth2/v1/jwks
+  type: Authentication
+  status: 200
+  note: RSA JWKS confirming RS256 token signing.
+- url: https://www.cliedis.ca/
+  type: Standards
+  status: 200
+  note: CLIEDIS — Canadian Life Insurance EDI Standards. Announces ACORD XML for
+    Life v2.48 in the CAIR tool; covers e-app, pending policy and Book of Business
+    feeds.
+- url: https://www.cliedis.ca/who-we-are/members
+  type: Standards
+  status: 200
+  note: Confirms Canada Life as a CLIEDIS carrier member. This is the ACORD evidence.

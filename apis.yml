@@ -1,0 +1,58 @@
+aid: canada-life
+url: https://raw.githubusercontent.com/api-evangelist/canada-life/refs/heads/main/apis.yml
+name: Canada Life
+kind: company
+description: >-
+  The Canada Life Assurance Company is one of Canada's largest life and
+  health insurers, formed from the 2020 amalgamation of Great-West Life, London Life
+  and Canada Life under Winnipeg-based parent Great-West Lifeco. From its home market
+  of Canada it underwrites individual life insurance, critical illness and disability
+  coverage, individual and group health and dental benefits, group retirement and
+  savings, segregated funds and annuities, distributed through an advisor and
+  managing-general-agent channel rather than direct-to-developer. Canada Life
+  publishes no public, self-serve developer portal and no downloadable API
+  specifications. Its integration surface is entirely partner-gated: a live
+  OAuth2-protected API gateway at api.canadalife.com that returns 403 on every path
+  and exposes only OpenID discovery and JWKS anonymously, a Liferay "Digital Agent"
+  advisor login wall at advisor.canadalife.com, a Salesforce-hosted customer portal
+  at my.canadalife.com, and — the real machine-to-machine channel for this market —
+  ACORD XML for Life data exchange with distributors through its carrier membership
+  in CLIEDIS, the Canadian Life Insurance EDI Standards body. A former Apigee
+  developer portal at developers.canadalife.com survives only as a dangling DNS
+  CNAME pointing at prod-canadalife-portal.apigee.net, which no longer resolves.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Insurance
+- Canada
+- Life Insurance
+- Health Insurance
+- Employee Benefits
+- Group Retirement
+- Carrier
+- ACORD
+- Partner Gated
+- No Public API
+created: '2026-07-25'
+modified: '2026-07-25'
+specificationVersion: '0.19'
+apis: []
+common:
+- type: Website
+  url: https://www.canadalife.com/
+- type: About
+  url: https://www.canadalife.com/about-us.html
+- type: SignIn
+  url: https://www.canadalife.com/sign-in.html
+- type: PartnerPortal
+  url: https://advisor.canadalife.com/login
+- type: CustomerPortal
+  url: https://my.canadalife.com/
+- type: Standards
+  url: https://www.cliedis.ca/who-we-are/members
+- type: LinkedIn
+  url: https://www.linkedin.com/company/canada-life
+- type: Review
+  url: review.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
