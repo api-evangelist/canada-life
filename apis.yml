@@ -53,6 +53,11 @@ apis:
   baseURL: https://api.canadalife.com
   tags:
   - Partner Gated
+  - Authentication
+  - OpenID Connect
+  - Insurance
+  tags_raw:
+  - Partner Gated
   - OAuth
   - OpenID Connect
   - Insurance
