@@ -78,7 +78,6 @@ apis:
   humanURL: https://www.canadalife.com/sign-in/advisor-logins.html
   baseURL: https://api.canadalife.com
   tags:
-  - Partner Gated
   - Authentication
   - OpenID Connect
   - Insurance
@@ -115,6 +114,10 @@ apis:
   humanURL: https://my.canadalife.com/
   baseURL: https://my.canadalife.com
   tags:
+  - OpenID Connect
+  - Salesforce
+  - Customer Portal
+  tags_raw:
   - OpenID Connect
   - Salesforce
   - Customer Portal
